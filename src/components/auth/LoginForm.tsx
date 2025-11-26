@@ -20,7 +20,6 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<UniqueCode> = (data) => {
     console.log("Form Data:", data);
     navigate("/home");
-    // Add your API call here
   };
 
   return (

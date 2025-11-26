@@ -1,3 +1,4 @@
+import DashboardTables from "../components/dashboard/DasboardTables";
 import DashboardCards from "../components/dashboard/DashboardCards";
 import Navbar from "../ui/Navbar";
 
@@ -6,6 +7,7 @@ const Dashboard = () => {
     <div>
       <Navbar />
       <DashboardCards />
+      <DashboardTables />
     </div>
   );
 };

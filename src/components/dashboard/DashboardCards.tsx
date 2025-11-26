@@ -1,7 +1,6 @@
 import { QrCode, ExternalLink } from "lucide-react";
 
 const DashboardCards = () => {
-  // 1. Data array to make code cleaner and easier to manage
   const stats = [
     {
       title: "Tickets",
@@ -41,11 +40,11 @@ const DashboardCards = () => {
           </div>
 
           <div className="flex flex-row gap-3">
-            <button className="h-9 px-4 rounded-lg border border-[#E9E9E9] text-sm text-[#1E1E1E] font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+            <button className="h-9 px-4 cursor-pointer rounded-lg border border-[#E9E9E9] text-sm text-[#1E1E1E] font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
               <QrCode size={16} />
               Event QR
             </button>
-            <button className="h-9 px-4 bg-[#111111] text-white text-sm font-medium rounded-lg hover:bg-black/80 transition-colors flex items-center gap-2">
+            <button className="h-9 px-4 cursor-pointer bg-[#111111] text-white text-sm font-medium rounded-lg hover:bg-black/80 transition-colors flex items-center gap-2">
               Event Page
               <ExternalLink size={14} />
             </button>
