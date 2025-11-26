@@ -137,8 +137,8 @@ const DashboardTables = () => {
   };
 
   return (
-    <div className="w-full min-w-[1440px] bg-white">
-      <div className="max-w-screen-2xl mx-auto px-12 py-8 flex flex-col gap-8">
+    <div className="w-full max-w-[1400px] bg-white">
+      <div className="max-w-screen-2xl mx-auto px-10 py-8 flex flex-col gap-8">
         <div className="flex flex-col gap-6">
           <div className="flex flex-row gap-8 border-b border-[#E9E9E9]">
             <TabButton
