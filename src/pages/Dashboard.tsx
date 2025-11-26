@@ -4,7 +4,7 @@ import Navbar from "../ui/Navbar";
 
 const Dashboard = () => {
   return (
-    <div>
+    <div className="overflow-hidden">
       <Navbar />
       <DashboardCards />
       <DashboardTables />

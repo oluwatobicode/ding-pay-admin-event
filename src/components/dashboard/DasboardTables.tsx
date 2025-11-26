@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Search, ChevronDown, Download } from "lucide-react";
 
+interface TabButtonProps {
+  name: string;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}
+
 // Mock Data for Tickets
 const tickets = [
   {
@@ -85,7 +91,30 @@ const orderData = {
   date: "12 March, 2025, 12:57 PM",
 };
 
+const payoutData = {
+  recipientName: "TedX Bowen University 2025",
+  recipientBank: "First Bank",
+  accountNumber: "009012345",
+  payoutAmount: "₦449,150",
+  payoutDate: "12 March, 2025, 12:57 PM",
+  status: "Pending",
+};
+
 const orders = Array(10).fill(orderData);
+const payouts = Array(2).fill(payoutData);
+
+const TabButton = ({ name, activeTab, setActiveTab }: TabButtonProps) => (
+  <button
+    onClick={() => setActiveTab(name)}
+    className={`pb-3 transition-colors ${
+      activeTab === name
+        ? "border-b-2 border-[#1884F6] font-medium text-[#1884F6]"
+        : "text-[#6C7788] hover:text-[#1E1E1E]"
+    }`}
+  >
+    {name}
+  </button>
+);
 
 const DashboardTables = () => {
   const [activeTab, setActiveTab] = useState("All Tickets");
@@ -99,28 +128,34 @@ const DashboardTables = () => {
     return "bg-gray-100 text-gray-600";
   };
 
-  // Tab Button Helper
-  const TabButton = ({ name }: string) => (
-    <button
-      onClick={() => setActiveTab(name)}
-      className={`pb-3 transition-colors ${
-        activeTab === name
-          ? "border-b-2 border-[#1884F6] font-medium text-[#1884F6]"
-          : "text-[#6C7788] hover:text-[#1E1E1E]"
-      }`}
-    >
-      {name}
-    </button>
-  );
+  const getStatusPayment = (status: string) => {
+    if (status === "Pending") {
+      return "bg-[#FFF6ED] text-[#C4320A]";
+    } else if (status === "Paid") {
+      return "bg-[#ECFDF3] text-[#027A48]";
+    }
+  };
 
   return (
     <div className="w-full min-w-[1440px] bg-white">
       <div className="max-w-screen-2xl mx-auto px-12 py-8 flex flex-col gap-8">
         <div className="flex flex-col gap-6">
           <div className="flex flex-row gap-8 border-b border-[#E9E9E9]">
-            <TabButton name="All Tickets" />
-            <TabButton name="Orders" />
-            <TabButton name="Payouts" />
+            <TabButton
+              name="All Tickets"
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              name="Orders"
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+            <TabButton
+              name="Payouts"
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
           </div>
 
           <div className="flex justify-between items-center">
@@ -173,7 +208,7 @@ const DashboardTables = () => {
           </div>
         </div>
 
-        <div className="border border-[#E1E4EA] rounded-[16px] overflow-hidden">
+        <div className="border border-[#E1E4EA] rounded-2xl overflow-hidden">
           <table className="w-full text-left border-collapse">
             <thead className="bg-[#F9F9F9] border-b border-[#E1E4EA]">
               <tr>
@@ -220,9 +255,26 @@ const DashboardTables = () => {
                     </th>
                   </>
                 ) : (
-                  <th className="p-4 text-xs font-medium text-[#6C7788] uppercase tracking-wider">
-                    Payout Details
-                  </th>
+                  <>
+                    <th className="p-4 text-xs font-medium text-[#6C7788] uppercase tracking-wider">
+                      Payout Details
+                    </th>
+                    <th className="p-4 text-xs font-medium text-[#6C7788] uppercase tracking-wider">
+                      Recipient Bank
+                    </th>
+                    <th className="p-4 text-xs font-medium text-[#6C7788] uppercase tracking-wider">
+                      Account Number
+                    </th>
+                    <th className="p-4 text-xs font-medium text-[#6C7788] uppercase tracking-wider">
+                      Payout Amount
+                    </th>
+                    <th className="p-4 text-xs font-medium text-[#6C7788] uppercase tracking-wider">
+                      Payout Date
+                    </th>
+                    <th className="p-4 text-xs font-medium text-[#6C7788] uppercase tracking-wider">
+                      Status
+                    </th>
+                  </>
                 )}
               </tr>
             </thead>
@@ -230,14 +282,16 @@ const DashboardTables = () => {
               {activeTab === "All Tickets" &&
                 tickets.map((el, i) => (
                   <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4 text-sm font-medium text-[#1E1E1E]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.fullName}
                     </td>
-                    <td className="p-4 text-sm text-[#6C7788]">{el.email}</td>
-                    <td className="p-4 text-sm text-[#6C7788]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.email}
+                    </td>
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.phoneNumber}
                     </td>
-                    <td className="p-4 text-sm text-[#6C7788]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.ticketType}
                     </td>
                     <td className="p-4">
@@ -246,13 +300,6 @@ const DashboardTables = () => {
                           el.Status
                         )}`}
                       >
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
-                            el.Status === "Going"
-                              ? "bg-[#C4320A]"
-                              : "bg-[#027A48]"
-                          }`}
-                        ></span>
                         {el.Status}
                       </span>
                     </td>
@@ -262,40 +309,66 @@ const DashboardTables = () => {
               {activeTab === "Orders" &&
                 orders.map((el, i) => (
                   <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4 text-sm font-medium text-[#1E1E1E]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.orderId}
                     </td>
-                    <td className="p-4 text-sm text-[#6C7788]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.noOfTickets}
                     </td>
-                    <td className="p-4 text-sm text-[#6C7788]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.orderAmount}
                     </td>
-                    <td className="p-4 text-sm text-[#6C7788]">{el.dingFee}</td>
-                    <td className="p-4 text-sm text-[#6C7788]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.dingFee}
+                    </td>
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.buyerName}
                     </td>
-                    <td className="p-4 text-sm text-[#6C7788]">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.buyerEmail}
                     </td>
-                    <td className="p-4 text-sm text-[#6C7788]">{el.date}</td>
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.date}
+                    </td>
                   </tr>
                 ))}
 
-              {activeTab === "Payouts" && (
-                <tr>
-                  <td className="p-8 text-center text-gray-500" colSpan={7}>
-                    No payout history available yet.
-                  </td>
-                </tr>
-              )}
+              {activeTab === "Payouts" &&
+                payouts.map((el, i) => (
+                  <tr key={i} className="hover:bg-gray-50 transition-colors">
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.recipientName}
+                    </td>
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.recipientBank}
+                    </td>
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.accountNumber}
+                    </td>
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.payoutAmount}
+                    </td>
+                    <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
+                      {el.payoutDate}
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusPayment(
+                          el.status
+                        )}`}
+                      >
+                        {el.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
 
           <div className="flex items-center justify-between px-4 py-4 border-t border-[#E1E4EA] bg-white">
             <p className="text-sm text-[#6C7788]">
-              Showing <span className="font-medium text-[#1E1E1E]">1-10</span>{" "}
-              of <span className="font-medium text-[#1E1E1E]">93</span>
+              <span className="font-medium text-[#1E1E1E]">1-10 of </span>
+              <span className="font-medium text-[#1E1E1E]">93</span>
             </p>
             <div className="flex gap-3">
               <button className="px-3.5 py-2 border border-[#E9E9E9] rounded-lg text-sm font-medium text-[#344054] hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
