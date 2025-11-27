@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Search, ChevronDown, Download } from "lucide-react";
+import Sidebar from "../../ui/Sidebar";
+import OrderSidebar from "../../ui/OrderSidebar";
+import PayoutSidebar from "../../ui/PayoutSidebar";
 
 interface TabButtonProps {
   name: string;
@@ -86,9 +89,19 @@ const orderData = {
   noOfTickets: 1,
   orderAmount: "₦7,500",
   dingFee: "₦325",
+  discount: "₦0",
+  payout: "₦7,175",
   buyerName: "Tolu Andula",
   buyerEmail: "t.andula@gmail.com",
   date: "12 March, 2025, 12:57 PM",
+  tickets: [
+    {
+      ticketNumber: 1,
+      ticketType: "Regular",
+      name: "Tolu Andula",
+      email: "t.andula@gmail.com",
+    },
+  ],
 };
 
 const payoutData = {
@@ -118,6 +131,29 @@ const TabButton = ({ name, activeTab, setActiveTab }: TabButtonProps) => (
 
 const DashboardTables = () => {
   const [activeTab, setActiveTab] = useState("All Tickets");
+  const [showSidebar, setShowSidebar] = useState<boolean>(false);
+  const [showOrderSidebar, setShowOrderSidebar] = useState<boolean>(false);
+  const [selectedOrder, setSelectedOrder] = useState<typeof orderData | null>(
+    null
+  );
+  const [showPayoutSidebar, setShowPayoutSidebar] = useState<boolean>(false);
+  const [selectedPayout, setSelectedPayout] = useState<
+    typeof payoutData | null
+  >(null);
+
+  const open = () => {
+    setShowSidebar(true);
+  };
+
+  const openOrder = (order: typeof orderData) => {
+    setSelectedOrder(order);
+    setShowOrderSidebar(true);
+  };
+
+  const openPayout = (payout: typeof payoutData) => {
+    setSelectedPayout(payout);
+    setShowPayoutSidebar(true);
+  };
 
   const getStatusStyles = (status: string) => {
     if (status === "Going") {
@@ -281,7 +317,11 @@ const DashboardTables = () => {
             <tbody className="bg-white divide-y divide-[#E1E4EA]">
               {activeTab === "All Tickets" &&
                 tickets.map((el, i) => (
-                  <tr key={i} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={i}
+                    onClick={open}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
                     <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.fullName}
                     </td>
@@ -308,7 +348,11 @@ const DashboardTables = () => {
 
               {activeTab === "Orders" &&
                 orders.map((el, i) => (
-                  <tr key={i} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={i}
+                    onClick={() => openOrder(el)}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
                     <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.orderId}
                     </td>
@@ -335,7 +379,11 @@ const DashboardTables = () => {
 
               {activeTab === "Payouts" &&
                 payouts.map((el, i) => (
-                  <tr key={i} className="hover:bg-gray-50 transition-colors">
+                  <tr
+                    key={i}
+                    onClick={() => openPayout(el)}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
                     <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">
                       {el.recipientName}
                     </td>
@@ -380,6 +428,32 @@ const DashboardTables = () => {
             </div>
           </div>
         </div>
+
+        {/* sidebars */}
+        <>
+          {showSidebar && (
+            <Sidebar activeTab={activeTab} setShowSidebar={setShowSidebar} />
+          )}
+
+          {showOrderSidebar && (
+            <OrderSidebar
+              order={selectedOrder}
+              setShowOrderSidebar={setShowOrderSidebar}
+            />
+          )}
+
+          {showPayoutSidebar && (
+            <PayoutSidebar
+              setShowPayoutSidebar={setShowPayoutSidebar}
+              availableBalance={
+                selectedPayout?.payoutAmount || payouts[0].payoutAmount
+              }
+              bankName={selectedPayout?.recipientBank}
+              accountNumber={selectedPayout?.accountNumber}
+              accountName={selectedPayout?.recipientName}
+            />
+          )}
+        </>
       </div>
     </div>
   );

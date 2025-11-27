@@ -1,6 +1,15 @@
 import { QrCode, ExternalLink } from "lucide-react";
+import SidebarQR from "../../ui/SidebarQR";
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 
 const DashboardCards = () => {
+  const [showQr, setShowQr] = useState<boolean>(false);
+
+  const onClick = () => {
+    setShowQr(true);
+  };
+
   const stats = [
     {
       title: "Tickets",
@@ -40,7 +49,10 @@ const DashboardCards = () => {
           </div>
 
           <div className="flex flex-row gap-3">
-            <button className="h-9 px-4 cursor-pointer rounded-lg border border-[#E9E9E9] text-sm text-[#1E1E1E] font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
+            <button
+              onClick={onClick}
+              className="h-9 px-4 cursor-pointer rounded-lg border border-[#E9E9E9] text-sm text-[#1E1E1E] font-medium hover:bg-gray-50 transition-colors flex items-center gap-2"
+            >
               <QrCode size={16} />
               Event QR
             </button>
@@ -75,6 +87,10 @@ const DashboardCards = () => {
           ))}
         </div>
       </div>
+
+      <AnimatePresence>
+        {showQr && <SidebarQR setShowQr={setShowQr} />}
+      </AnimatePresence>
     </div>
   );
 };
