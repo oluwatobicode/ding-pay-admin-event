@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -10,6 +10,14 @@ const SidebarQR = ({ setShowQr }: SidebarQRProps) => {
   const closeSidebar = () => {
     setShowQr(false);
   };
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   return (
     <motion.main

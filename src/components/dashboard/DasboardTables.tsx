@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, ChevronDown, Download } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
 import Sidebar from "../../ui/Sidebar";
 import OrderSidebar from "../../ui/OrderSidebar";
 import PayoutSidebar from "../../ui/PayoutSidebar";
@@ -150,9 +150,9 @@ const DashboardTables = () => {
     setShowOrderSidebar(true);
   };
 
-  const openPayout = (payout: typeof payoutData) => {
-    setSelectedPayout(payout);
+  const openPayout = () => {
     setShowPayoutSidebar(true);
+    setSelectedPayout(payoutData);
   };
 
   const getStatusStyles = (status: string) => {
@@ -236,15 +236,33 @@ const DashboardTables = () => {
                 </>
               )}
 
-              <button className="flex items-center gap-2 h-10 px-4 rounded-lg border border-[#E9E9E9] text-sm font-medium text-[#344054] bg-white hover:bg-gray-50 transition-colors">
-                <Download size={16} />
-                Export Data (CSV)
-              </button>
+              {activeTab === "Payouts" && (
+                <>
+                  <div className="relative">
+                    <select className="appearance-none h-10 pl-4 pr-10 rounded-lg border border-[#E9E9E9] text-sm font-medium text-[#344054] bg-white outline-none focus:border-gray-400 cursor-pointer">
+                      <option>Status: All</option>
+                      <option>Going</option>
+                      <option>Checked-in</option>
+                    </select>
+                    <ChevronDown
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6C7788] pointer-events-none"
+                      size={16}
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => openPayout()}
+                    className="flex cursor-pointer items-center gap-2 h-10 px-4 rounded-lg border border-[#E9E9E9] text-sm font-medium text-[#344054] bg-white hover:bg-gray-50 transition-colors"
+                  >
+                    Request Payout
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="border border-[#E1E4EA] rounded-2xl overflow-hidden">
+        <div className="border border-[#E1E4EA] rounded-xl overflow-hidden">
           <table className="w-full text-left border-collapse">
             <thead className="bg-[#F9F9F9] border-b border-[#E1E4EA]">
               <tr>
@@ -381,7 +399,6 @@ const DashboardTables = () => {
                 payouts.map((el, i) => (
                   <tr
                     key={i}
-                    onClick={() => openPayout(el)}
                     className="hover:bg-gray-50 cursor-pointer transition-colors"
                   >
                     <td className="p-4 text-sm font-medium text-[#1E1E1E] leading-5 tracking-normal">

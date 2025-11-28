@@ -39,7 +39,7 @@ const DashboardCards = () => {
   ];
 
   return (
-    <div className="w-full max-w-[1400px] bg-white">
+    <div className="w-full max-w-[1400px] min-w-5xl bg-white">
       <div className="max-w-screen-2xl mx-auto px-10 py-8 flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="shrink-0">

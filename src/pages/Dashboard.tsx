@@ -4,7 +4,7 @@ import Navbar from "../ui/Navbar";
 
 const Dashboard = () => {
   return (
-    <div className="mx-auto max-w-screen-2xl">
+    <div className="mx-auto max-w-7xl">
       <Navbar />
       <DashboardCards />
       <DashboardTables />

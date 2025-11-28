@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -21,6 +21,14 @@ const PayoutSidebar = ({
   const { register, handleSubmit } = useForm<{ amount: string }>();
 
   const close = () => setShowPayoutSidebar(false);
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   const onSubmit = (data: { amount: string }) => {
     console.log("Request payout", data);

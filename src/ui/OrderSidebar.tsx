@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -48,6 +48,14 @@ const OrderSidebar = ({ order, setShowOrderSidebar }: OrderSidebarProps) => {
   const closeSidebar = () => {
     setShowOrderSidebar(false);
   };
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
 
   if (!order) return null;
 
@@ -112,7 +120,7 @@ const OrderSidebar = ({ order, setShowOrderSidebar }: OrderSidebarProps) => {
                   },
                 ]
             ).map((t, idx) => (
-              <div key={idx}>
+              <div key={idx} className="flex flex-col gap-4">
                 <h3 className="text-[14px] leading-[20px] tracking-normal text-[#000000] font-medium mt-6 mb-6">
                   Ticket {t.ticketNumber ?? idx + 1}
                 </h3>
