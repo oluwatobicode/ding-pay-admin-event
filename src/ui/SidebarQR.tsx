@@ -49,7 +49,7 @@ const SidebarQR = ({ setShowQr }: SidebarQRProps) => {
           </button>
         </div>
 
-        <div className="flex-1 flex flex-col p-3">
+        <div className="flex-1 flex flex-col items-center justify-center p-3">
           <div className="w-[300px] h-[300px]  flex items-center justify-center overflow-hidden">
             <img
               src="/qr-code.svg"

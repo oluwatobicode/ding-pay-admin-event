@@ -34,7 +34,7 @@ const DetailRow = ({
   label: string;
   value?: string | number | undefined;
 }) => (
-  <div className="w-full flex items-center justify-between pb-3 last:border-0">
+  <div className="w-full flex items-center justify-between  last:border-0">
     <h3 className="text-[14px] font-medium leading-5 text-[#A0A7B4]">
       {label}
     </h3>
@@ -90,10 +90,10 @@ const OrderSidebar = ({ order, setShowOrderSidebar }: OrderSidebarProps) => {
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
-          <h2 className="text-[14px] leading-[20px] tracking-normal text-[#000000] font-medium mt-6 mb-3">
+          <h2 className="text-[14px] leading-[20px] tracking-normal text-[#000000] font-medium mt-[24px] mb-[24px]">
             Order information
           </h2>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-[16px]">
             <DetailRow label="Order ID" value={order.orderId} />
             <DetailRow label="Order Amount" value={order.orderAmount} />
             <DetailRow label="Discount" value={order.discount} />
@@ -104,11 +104,13 @@ const OrderSidebar = ({ order, setShowOrderSidebar }: OrderSidebarProps) => {
             <DetailRow label="Buyer Email" value={order.buyerEmail} />
           </div>
 
-          <h2 className="text-[14px] leading-[20px] tracking-normal text-[#000000] font-medium mt-6 mb-3">
+          <div className="border flex items-center justify-center my-[32px] border-[#E0E0E0]"></div>
+
+          <h2 className="text-[14px] leading-[20px] tracking-normal text-[#000000] font-medium mt-6 mb-[24px]">
             Ticket information
           </h2>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-[16px]">
             {(order.tickets && order.tickets.length > 0
               ? order.tickets
               : [
@@ -121,7 +123,7 @@ const OrderSidebar = ({ order, setShowOrderSidebar }: OrderSidebarProps) => {
                 ]
             ).map((t, idx) => (
               <div key={idx} className="flex flex-col gap-4">
-                <h3 className="text-[14px] leading-[20px] tracking-normal text-[#000000] font-medium mt-6 mb-6">
+                <h3 className="text-[14px] leading-[20px] tracking-normal text-[#000000] font-medium">
                   Ticket {t.ticketNumber ?? idx + 1}
                 </h3>
                 <DetailRow label="Ticket type" value={t.ticketType} />
